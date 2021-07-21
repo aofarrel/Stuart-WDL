@@ -1,9 +1,9 @@
 version 1.0
 
-import "https://raw.githubusercontent.com/aofarrel/Stuart-WDL/main/arraycheck_simple.wdl" as module1
-import "https://raw.githubusercontent.com/aofarrel/Stuart-WDL/main/arraycheck_rdata.wdl" as module2
-import "https://raw.githubusercontent.com/aofarrel/Stuart-WDL/main/filechecker.wdl" as module3
-import "https://raw.githubusercontent.com/aofarrel/Stuart-WDL/main/enumouse.wdl" as module4
+import "arraycheck_simple.wdl" as module1
+import "arraycheck_rdata.wdl" as module2
+import "filechecker.wdl" as module3
+import "enumouse.wdl" as module4
 
 workflow metamouse {
 	input {

@@ -1,11 +1,11 @@
 version 1.0
 
-task stuart_arraycheck_functequiv {
+task stuart_arraycheck_rdata {
 
 	input {
 		Array[File] test
 		Array[File] truth
-		Float? tolerance = 0.00000001  # 1.0e-8
+		Float? tolerance = 0.00000001  # 1.0e-8, only matters if exact==false
 		Boolean exact = false  # should we only check for md5 equivalence?
 		Boolean fastfail = false  # should we exit as soon as we get our first mismatch?
 	}

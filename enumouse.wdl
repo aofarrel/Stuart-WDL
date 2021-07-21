@@ -4,8 +4,7 @@ task stuart_enumouse {
 	input {
 		String? genome_build
 	}
-	Boolean isdefined_genome = defined(genome_build)
-	
+
 	command <<<
 		set -eux -o pipefail
 
@@ -22,9 +21,9 @@ task stuart_enumouse {
 	>>>
 
 	runtime {
-		cpu: 2
+		cpu: 1
 		docker: "quay.io/aofarrel/rchecker:1.1.0"
-		memory: "2 GB"
+		memory: "512 MB"
 		preemptible: 2
 	}
 }
