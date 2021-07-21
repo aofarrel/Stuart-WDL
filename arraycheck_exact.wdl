@@ -9,8 +9,8 @@ task stuart_arraycheck_exact {
 		Boolean fastfail = false  # set to truth if we should exit out upon first mismatch
 	}
 
-	Int test_size = ceil(size(select_first([test, 0]), "GB"))
-	Int truth_size = ceil(size(select_first([truth, 0]), "GB"))
+	Int test_size = ceil(size(test), "GB"))
+	Int truth_size = ceil(size(truth), "GB"))
 	Int finalDiskSize = test_size + truth_size + 1
 
 	command <<<
