@@ -13,7 +13,8 @@ task stuart_filechecker {
     md5sum ~{test} > test.txt
     md5sum ~{truth} > truth.txt
 
-    if [ ~{verbose} ]; do
+    if ~{verbose}
+    then
       # not all backends support optional outputs, 
       # so for now, this goes to stderr rather
       # than an output file

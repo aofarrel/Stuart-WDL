@@ -27,12 +27,12 @@ task stuart_arraycheck_exact {
 			fi
 		done
 
-		# md5
 		if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
 		then
-			echo "Outputs are not identical, but are mostly equivalent."
 			if ~{fastfail}
+			then
 				exit 1
+			fi
 		fi
 	done
 
