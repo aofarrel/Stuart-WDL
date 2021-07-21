@@ -12,5 +12,9 @@ Similar to arraycheck_exact, but upon md5 mismatch, an Rscript is run to check f
 ## enumouse
 Type `enum` exists in CWL, but not WDL. This task very roughly mimics the `enum` type by checking if a string is within an allowed set of values.
 
+## filechecker
+Checks if two files are equivalent, as opposed to arraycheck_* iterating through two arrays. Includes the same Rdata equivalence checker of arraycheck_rdata (disabled by default).
+
 ## metamouse
 Checker/Debugger for Stuart tasks. The test files are derived from the [WDL translation](https://github.com/DataBiosphere/analysis_pipeline_WDL) of the [UWGAC TOPMed Pipeline](https://github.com/UW-GAC/analysis_pipeline).
+
