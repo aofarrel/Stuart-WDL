@@ -10,4 +10,4 @@ For performing a check between an array of truth files and an array of test file
 Similar to arraycheck_exact, but upon md5 mismatch, an Rscript is run to check for functional equivalence via `all.equal(testfile, truthfile, tolerance)`. It is assumed that both checked files are RData files. The user may set the tolerance value, which defaults to 1.0e-8.
 
 ## metamouse
-Checker/Debugger for Stuart tasks.
+Checker/Debugger for Stuart tasks. The test files are derived from the [WDL translation](https://github.com/DataBiosphere/analysis_pipeline_WDL) of the [UWGAC TOPMed Pipeline](https://github.com/UW-GAC/analysis_pipeline).

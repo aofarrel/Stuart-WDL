@@ -1,0 +1,10 @@
+{  
+  "metamouse.SB_nullmodel": "gs://topmed_workflow_testing/UWGAC_WDL/checker/e_nullmodel/basecase_null_model_invnorm.RData",
+  "metamouse.SB_pheno": "gs://topmed_workflow_testing/UWGAC_WDL/checker/e_nullmodel/basecase_phenotypes.RData",
+  "metamouse.SB_report": "gs://topmed_workflow_testing/UWGAC_WDL/checker/e_nullmodel/basecase_report.Rmd",
+  "metamouse.SB_report_invnorm": "gs://topmed_workflow_testing/UWGAC_WDL/checker/e_nullmodel/basecase_invnorm_report.Rmd",
+  "metamouse.local_nullmodel": "gs://topmed_workflow_testing/UWGAC_WDL/checker/e_nullmodel/local-WDL-test-files-example/basecase_null_model_invnorm.RData",
+  "metamouse.local_pheno": "gs://topmed_workflow_testing/UWGAC_WDL/checker/e_nullmodel/local-WDL-test-files-example/basecase_phenotypes.RData",
+  "metamouse.local_report": "gs://topmed_workflow_testing/UWGAC_WDL/checker/e_nullmodel/local-WDL-test-files-example/basecase_report.Rmd",
+  "metamouse.local_report_invnorm": "gs://topmed_workflow_testing/UWGAC_WDL/checker/e_nullmodel/local-WDL-test-files-example/basecase_invnorm_report.Rmd"
+}

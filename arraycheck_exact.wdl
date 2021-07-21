@@ -1,4 +1,6 @@
-stuart_arraycheck_exact {
+verison 1.0
+
+task stuart_arraycheck_exact {
 
 	input {
 		Array[File] test
