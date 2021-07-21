@@ -1,3 +1,3 @@
 {  
-  "whiskertail.bogus": "This gets ignored."
+  "whiskertail.bogus": "Some backends require an input JSON, so we have one that does nothing."
 }
