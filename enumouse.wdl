@@ -9,9 +9,16 @@ task stuart_enumouse {
 	command <<<
 		set -eux -o pipefail
 
-		declare -A acceptable_genomes=( [hg38]=1  [hg19]=1  [hg19]=1 )
+		declare -A acceptable_genomes=( [hg38]=38  [hg18]=18  [hg19]=19 )
 		test="~{genome_build}"
-		[[ -n "${acceptable_genomes[$test]}" ]] && printf '~{genome_build} is an acceptable input\n'
+		if [ -z ${acceptable_genomes[$test]+x} ]
+		then
+			echo "$test is not an acceptable value."
+			exit 1
+		else
+			echo "$test is an acceptable value."
+			exit 0
+		fi
 	>>>
 
 	runtime {

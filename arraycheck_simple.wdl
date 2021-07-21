@@ -1,10 +1,9 @@
 version 1.0
 
-task stuart_arraycheck_exact {
+task stuart_arraycheck_simple {
 	input {
 		Array[File] test
 		Array[File] truth
-		Float? tolerance = 0.00000001  # this equals 1.0e-8
 		Boolean fastfail = false  # set to truth if we should exit out upon first mismatch
 	}
 
