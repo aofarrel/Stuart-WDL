@@ -2,8 +2,6 @@ version 1.0
 
 task stuart_arraycheck_functequiv {
 
-	Int stuart_version = 0.0.0
-
 	input {
 		Array[File] test
 		Array[File] truth
