@@ -37,13 +37,6 @@ workflow metamouse {
 			truth = local_pheno
 	}
 
-	call module3.stuart_filechecker as pass_FC_quiet {
-		input:
-			test = SB_pheno,
-			truth = local_pheno,
-			verbose = false
-	}
-
 	call module4.stuart_enumouse as pass_ENU {
 		input:
 			genome_build = "hg38"
