@@ -10,7 +10,7 @@ task stuart_enumouse {
 		set -eux -o pipefail
 
 		declare -A acceptable_genomes=( [hg38]=1  [hg19]=1  [hg19]=1 )
-		test=~{genome_build}
+		test="~{genome_build}"
 		[[ -n "${acceptable_genomes[$test]}" ]] && printf '~{genome_build} is an acceptable input\n'
 	>>>
 

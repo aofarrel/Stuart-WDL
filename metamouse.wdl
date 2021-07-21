@@ -35,5 +35,8 @@ workflow metamouse {
 			truth = local_pheno
 	}
 
-	call module4.stuart_enumouse
+	call module4.stuart_enumouse {
+		input:
+			genome_build = "hg39"
+	}
 }

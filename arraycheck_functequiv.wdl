@@ -74,7 +74,7 @@ task stuart_arraycheck_functequiv {
 		fi
 	done
 
-	if failflag
+	if ${failflag}
 	then
 		exit 1
 	fi
