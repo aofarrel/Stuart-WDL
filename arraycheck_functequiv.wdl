@@ -2,14 +2,16 @@ version 1.0
 
 task stuart_arraycheck_functequiv {
 
+	Int stuart_version = 0.0.0
+
 	input {
 		Array[File] test
 		Array[File] truth
 		Float? tolerance = 0.00000001  # 1.0e-8
 	}
 
-	Int test_size = ceil(size(test), "GB"))
-	Int truth_size = ceil(size(truth), "GB"))
+	Int test_size = ceil(size(test, "GB"))
+	Int truth_size = ceil(size(truth, "GB"))
 	Int finalDiskSize = test_size + truth_size + 1
 
 	command <<<
