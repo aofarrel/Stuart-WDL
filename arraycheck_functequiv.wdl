@@ -6,16 +6,20 @@ task stuart_arraycheck_functequiv {
 		Array[File] test
 		Array[File] truth
 		Float? tolerance = 0.00000001  # 1.0e-8
+		Boolean exact = false  # should we only check for md5 equivalence?
+		Boolean fastfail = false  # should we exit as soon as we get our first mismatch?
 	}
 
-	Int test_size = ceil(size(test, "GB"))
-	Int truth_size = ceil(size(truth, "GB"))
+	Int test_size = 2*ceil(size(test, "GB"))
+	Int truth_size = 2*ceil(size(truth, "GB"))
 	Int finalDiskSize = test_size + truth_size + 1
 
 	command <<<
 
 	# the md5 stuff pulls from the files in /inputs/
 	# the Rscript pulls from the copied files
+
+	failflag=false
 	for j in ~{sep=' ' test}
 	do
 		
@@ -45,18 +49,35 @@ task stuart_arraycheck_functequiv {
 		# md5
 		if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
 		then
-			# R
-			echo "Calling Rscript to check for functional equivalence."
-			if Rscript /opt/rough_equivalence_check.R testcopy_$test_basename truthcopy_$truth_basename ~{tolerance}
+			if ! ~{exact}
 			then
-				echo "Outputs are not identical, but are mostly equivalent."
-				# do not exit, check the others
+				# R
+				echo "Calling Rscript to check for functional equivalence."
+				if Rscript /opt/rough_equivalence_check.R testcopy_$test_basename truthcopy_$truth_basename ~{tolerance}
+				then
+					echo "Outputs are not identical, but are mostly equivalent."
+				else
+					echo "Outputs vary beyond accepted tolerance (default:1.0e-8)."
+					failflag=true
+					if fastfail
+					then
+						exit 1
+					fi
+				fi
 			else
-				echo "Outputs vary beyond accepted tolerance (default:1.0e-8)."
-				exit 1
+				failflag=true
+				if ~{fastfail}
+				then
+					exit 1
+				fi
 			fi
 		fi
 	done
+
+	if failflag
+	then
+		exit 1
+	fi
 
 	>>>
 
