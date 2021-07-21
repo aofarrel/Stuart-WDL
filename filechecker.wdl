@@ -4,7 +4,7 @@ task stuart_filechecker {
   input {
     File test
     File truth
-    Boolean exact = true
+    Boolean exact = true  # currently a no-op
     Boolean verbose = true
   }
 

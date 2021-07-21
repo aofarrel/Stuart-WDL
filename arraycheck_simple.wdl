@@ -4,7 +4,7 @@ task stuart_arraycheck_simple {
 	input {
 		Array[File] test
 		Array[File] truth
-		Boolean fastfail = false  # set to truth if we should exit out upon first mismatch
+		Boolean fastfail = false  # should we exit out upon first mismatch?
 	}
 
 	Int test_size = ceil(size(test, "GB"))

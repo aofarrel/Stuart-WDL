@@ -17,16 +17,37 @@ workflow metamouse {
 		File local_report_invnorm
 	}
 
-	call module1.stuart_arraycheck_simple {
+	call module1.stuart_arraycheck_simple as ACS {
 		input:
 			test = [local_nullmodel, local_pheno, local_report, local_report_invnorm],
 			truth = [SB_nullmodel, SB_pheno, SB_report, SB_report_invnorm]
 	}
 
-	call module2.stuart_arraycheck_functequiv {
+	call module1.stuart_arraycheck_simple as ACS_fastfail {
+		input:
+			test = [local_nullmodel, local_pheno, local_report, local_report_invnorm],
+			truth = [SB_nullmodel, SB_pheno, SB_report, SB_report_invnorm],
+			fastfail = true
+	}
+
+	call module2.stuart_arraycheck_functequiv as ACF {
 		input:
 			test = [local_nullmodel, local_pheno, local_report, local_report_invnorm],
 			truth = [SB_nullmodel, SB_pheno, SB_report, SB_report_invnorm]
+	}
+
+	call module2.stuart_arraycheck_functequiv as ACF_exact {
+		input:
+			test = [local_nullmodel, local_pheno, local_report, local_report_invnorm],
+			truth = [SB_nullmodel, SB_pheno, SB_report, SB_report_invnorm],
+			exact = true
+	}
+
+	call module2.stuart_arraycheck_functequiv as ACF_fastfail {
+		input:
+			test = [local_nullmodel, local_pheno, local_report, local_report_invnorm],
+			truth = [SB_nullmodel, SB_pheno, SB_report, SB_report_invnorm],
+			fastfail = true
 	}
 
 	call module3.stuart_filechecker {

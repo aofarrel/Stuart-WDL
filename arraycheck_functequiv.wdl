@@ -59,7 +59,7 @@ task stuart_arraycheck_functequiv {
 				else
 					echo "Outputs vary beyond accepted tolerance (default:1.0e-8)."
 					failflag=true
-					if fastfail
+					if ~{fastfail}
 					then
 						exit 1
 					fi
