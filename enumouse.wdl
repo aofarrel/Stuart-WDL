@@ -9,11 +9,16 @@ task stuart_enumouse {
 	command <<<
 		set -eux -o pipefail
 
-		python << CODE
-		if isdefined_genome:
-			if "~{genome_build}" not in ['hg19', 'hg38']:
-				print("Invalid ref genome. Please only select either hg38 or hg19.")
-				exit(1)
-		CODE
+		declare -A array1=( [prova1]=1  [prova2]=1  [slack64]=1 )
+		a=slack64
+		[[ -n "${array1[$a]}" ]] && printf '%s is in array\n' "$a"
 	>>>
+
+	runtime {
+		cpu: 2
+		disks: "local-disk " + finalDiskSize + " HDD"
+		docker: "quay.io/aofarrel/rchecker:1.1.0"
+		memory: "2 GB"
+		preemptible: 2
+	}
 }

@@ -33,7 +33,6 @@ task stuart_arraycheck_exact {
 			echo "Outputs are not identical, but are mostly equivalent."
 			if ~{fastfail}
 				exit 1
-			fi
 		fi
 	done
 
