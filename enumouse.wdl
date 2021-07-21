@@ -9,9 +9,9 @@ task stuart_enumouse {
 	command <<<
 		set -eux -o pipefail
 
-		declare -A array1=( [hg38]=1  [hg19]=1  [hg19]=1 )
-		a=${genome_build}
-		[[ -n "${array1[$a]}" ]] && printf '%s is in array\n' "$a"
+		declare -A acceptable_genomes=( [hg38]=1  [hg19]=1  [hg19]=1 )
+		test=~{genome_build}
+		[[ -n "${acceptable_genomes[$test]}" ]] && printf '~{genome_build} is an acceptable input\n'
 	>>>
 
 	runtime {
