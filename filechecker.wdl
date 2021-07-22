@@ -20,22 +20,22 @@ task stuart_filechecker {
     else
       if ~{verbose}
       then
-        >&2 echo "Test checksum:"
-        >&2 cat test.txt
-        >&2 echo "-=-=-=-=-=-=-=-=-=-"
-        >&2 echo "Truth checksum:"
-        >&2 cat truth.txt
-        >&2 echo "-=-=-=-=-=-=-=-=-=-"
-        >&2 echo "Contents of the output file:"
-        >&2 cat ~{test}
-        >&2 echo "-=-=-=-=-=-=-=-=-=-"
-        >&2 echo "Contents of the truth file:"
-        >&2 cat ~{truth}
-        >&2 echo "-=-=-=-=-=-=-=-=-=-"
-        >&2 echo "cmp and diff of these files:"
-        >&2 cmp --verbose test.txt truth.txt
-        >&2 diff test.txt truth.txt
-        >&2 diff -w test.txt truth.txt
+        echo "Test checksum:" > report.txt
+        cat test.txt > report.txt > report.txt
+        echo "-=-=-=-=-=-=-=-=-=-" > report.txt
+        echo "Truth checksum:" > report.txt
+        cat truth.txt > report.txt
+        echo "-=-=-=-=-=-=-=-=-=-" > report.txt
+        echo "Contents of the output file:" > report.txt
+        cat ~{test} > report.txt
+        echo "-=-=-=-=-=-=-=-=-=-" > report.txt
+        echo "Contents of the truth file:" > report.txt
+        cat ~{truth} > report.txt
+        echo "-=-=-=-=-=-=-=-=-=-" > report.txt
+        echo "cmp and diff of these files:" > report.txt
+        cmp --verbose test.txt truth.txt > report.txt
+        diff test.txt truth.txt > report.txt
+        diff -w test.txt truth.txt
       else
         if ~{exact}
         then
