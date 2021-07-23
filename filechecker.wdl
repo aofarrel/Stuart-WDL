@@ -16,37 +16,33 @@ task stuart_filechecker {
 
     if cat ~{truth} | md5sum --check test.txt
     then
-      echo "Files pass" > report.txt
+      echo "Files pass" | tee -a report.txt
     else
       if ~{verbose}
       then
-        >&2 echo "Test checksum:"
-        >&2 cat test.txt
-        >&2 echo "-=-=-=-=-=-=-=-=-=-"
-        >&2 echo "Truth checksum:"
-        >&2 cat truth.txt
-        >&2 echo "-=-=-=-=-=-=-=-=-=-"
-        >&2 echo "Contents of the output file:"
-        >&2 cat ~{test}
-        >&2 echo "-=-=-=-=-=-=-=-=-=-"
-        >&2 echo "Contents of the truth file:"
-        >&2 cat ~{truth}
-        >&2 echo "-=-=-=-=-=-=-=-=-=-"
-        >&2 echo "cmp and diff of these files:"
-        >&2 cmp --verbose test.txt truth.txt
-        >&2 diff test.txt truth.txt
-        >&2 diff -w test.txt truth.txt
+        echo "Test checksum:" | tee -a report.txt
+        cat test.txt | tee -a report.txt
+        echo "Truth checksum:" | tee -a report.txt
+        cat truth.txt | tee -a report.txt
+        echo "-=-=-=-=-=-=-=-=-=-\nContents of test file:" | tee -a report.txt
+        cat ~{test} | tee -a report.txt
+        echo "-=-=-=-=-=-=-=-=-=-\nContents of truth file:" | tee -a report.txt
+        cat ~{truth} | tee -a report.txt
+        echo "-=-=-=-=-=-=-=-=-=-\ncmp and diff of files:" | tee -a report.txt
+        cmp --verbose test.txt truth.txt | tee -a report.txt
+        diff test.txt truth.txt | tee -a report.txt
+        diff -w test.txt truth.txt
       else
         if ~{exact}
         then
-          echo "Files do not pass" > report.txt
+          echo "Files do not pass md5sum check" | tee -a report.txt
         else
-          echo "Calling Rscript to check for functional equivalence."
+          echo "Calling Rscript to check for functional equivalence..."
           if Rscript /opt/rough_equivalence_check.R ~{test} ~{truth} ~{tolerance}
           then
-            echo "Outputs are not identical, but are mostly equivalent." > report.txt
+            echo "Outputs are not identical, but are mostly equivalent." | tee -a report.txt
           else
-            echo "Outputs vary beyond accepted tolerance (default:1.0e-8)." > report.txt
+            echo "Outputs vary beyond accepted tolerance (default:1.0e-8)." | tee -a report.txt
           fi
         fi
       fi
