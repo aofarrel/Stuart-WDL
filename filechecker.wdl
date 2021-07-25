@@ -7,6 +7,8 @@ task stuart_filechecker {
     Boolean exact = true
     Boolean verbose = true
     Float tolerance = 0.00000001
+
+    Int disk_size = 5  # in gigabytes
   }
 
   command <<<
@@ -56,6 +58,7 @@ task stuart_filechecker {
 
   runtime {
     cpu: 1
+    disks: "local-disk " + disk_size + " HDD"
     docker: "quay.io/aofarrel/rchecker:1.1.0"
     memory: "1 GB"
     preemptible: 2
