@@ -19,11 +19,11 @@ workflow metamouse {
 
 	###################### these tasks should PASS ######################
 
-	call module1.stuart_arraycheck_simple as pass_ACS {
-		input:
-			test = [local_nullmodel, local_pheno, local_report, local_report_invnorm],
-			truth = [SB_nullmodel, SB_pheno, SB_report, SB_report_invnorm]
-	}
+	#call module1.stuart_arraycheck_simple as pass_ACS {
+	#	input:
+	#		test = [local_nullmodel, local_pheno, local_report, local_report_invnorm],
+	#		truth = [SB_nullmodel, SB_pheno, SB_report, SB_report_invnorm]
+	#}
 
 	call module2.stuart_arraycheck_rdata as pass_ACR {
 		input:
@@ -31,25 +31,25 @@ workflow metamouse {
 			truth = [SB_nullmodel, SB_pheno, SB_report, SB_report_invnorm]
 	}
 
-	call module3.stuart_filechecker as pass_FC {
-		input:
-			test = SB_pheno,
-			truth = local_pheno
-	}
+	#call module3.stuart_filechecker as pass_FC {
+	#	input:
+	#		test = SB_pheno,
+	#		truth = local_pheno
+	#}
 
-	call module4.stuart_enumouse as pass_ENU {
-		input:
-			genome_build = "hg38"
-	}
+	#call module4.stuart_enumouse as pass_ENU {
+	#	input:
+	#		genome_build = "hg38"
+	#}
 
 	###################### these tasks should FAIL ######################
 
-	call module1.stuart_arraycheck_simple as fail_ACS_fastfail {
-		input:
-			test = [local_nullmodel, local_pheno, local_report, local_report_invnorm],
-			truth = [SB_nullmodel, SB_pheno, SB_report, SB_report_invnorm],
-			fastfail = true
-	}
+	#call module1.stuart_arraycheck_simple as fail_ACS_fastfail {
+	#	input:
+	#		test = [local_nullmodel, local_pheno, local_report, local_report_invnorm],
+	#		truth = [SB_nullmodel, SB_pheno, SB_report, SB_report_invnorm],
+	#		fastfail = true
+	#}
 
 	call module2.stuart_arraycheck_rdata as fail_ACR_exact {
 		input:
@@ -66,13 +66,13 @@ workflow metamouse {
 			fastfail = true
 	}
 
-	call module4.stuart_enumouse as fail_ENU {
-		input:
-			genome_build = "hg39"
-	}
+	#call module4.stuart_enumouse as fail_ENU {
+	#	input:
+	#		genome_build = "hg39"
+	#}
 
-	call module4.stuart_enumouse as fail_ENU_subset {
-		input:
-			genome_build = "38"
-	}
+	#call module4.stuart_enumouse as fail_ENU_subset {
+	#	input:
+	#		genome_build = "38"
+	#}
 }

@@ -28,8 +28,8 @@ task stuart_arraycheck_rdata {
 		test_basename="$(basename -- ${j})"
 
 		# R
-		cp ${j} .
-		mv ${test_basename} "testcopy_${test_basename}"
+		#cp ${j} .
+		#mv ${test_basename} "testcopy_${test_basename}"
 
 		for i in ~{sep=' ' truth}
 		do
@@ -39,8 +39,8 @@ task stuart_arraycheck_rdata {
 				actual_truth="$i"
 
 				# R
-				cp ${i} .
-				mv ${truth_basename} "truthcopy_${truth_basename}"
+				#cp ${i} .
+				#mv ${truth_basename} "truthcopy_${truth_basename}"
 				
 				break
 			fi
@@ -53,7 +53,8 @@ task stuart_arraycheck_rdata {
 			then
 				# R
 				echo "Calling Rscript to check for functional equivalence."
-				if Rscript /opt/rough_equivalence_check.R testcopy_$test_basename truthcopy_$truth_basename ~{tolerance}
+				#if Rscript /opt/rough_equivalence_check.R testcopy_$test_basename truthcopy_$truth_basename ~{tolerance}
+				if Rscript /opt/rough_equivalence_check.R $j $actual_truth ~{tolerance}
 				then
 					echo "Outputs are not identical, but are mostly equivalent."
 				else
