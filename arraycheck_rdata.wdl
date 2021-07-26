@@ -16,9 +16,6 @@ task stuart_arraycheck_rdata {
 
 	command <<<
 
-	# the md5 stuff pulls from the files in /inputs/
-	# the Rscript pulls from the copied files
-
 	failflag=false
 	for j in ~{sep=' ' test}
 	do
