@@ -10,50 +10,36 @@ task stuart_arraycheck_rdata {
 		Boolean fastfail = false  # should we exit as soon as we get our first mismatch?
 	}
 
-	Int test_size = 2*ceil(size(test, "GB"))
-	Int truth_size = 2*ceil(size(truth, "GB"))
+	Int test_size = ceil(size(test, "GB"))
+	Int truth_size = ceil(size(truth, "GB"))
 	Int finalDiskSize = test_size + truth_size + 1
 
 	command <<<
 
-	# the md5 stuff pulls from the files in /inputs/
-	# the Rscript pulls from the copied files
-
 	failflag=false
 	for j in ~{sep=' ' test}
 	do
-		
-		# md5
 		md5sum ${j} > sum.txt
 		test_basename="$(basename -- ${j})"
-
-		# R
-		cp ${j} .
-		mv ${test_basename} "testcopy_${test_basename}"
 
 		for i in ~{sep=' ' truth}
 		do
 			truth_basename="$(basename -- ${i})"
-			if [ "${test_basename}" == "${truth_basename}" ]; then
-				# md5
-				actual_truth="$i"
 
-				# R
-				cp ${i} .
-				mv ${truth_basename} "truthcopy_${truth_basename}"
-				
+			# We assume the test file and truth file have the same basename
+			# Due to how WDL inputs work, they have a different absolute path
+			if [ "${test_basename}" == "${truth_basename}" ]; then
+				actual_truth="$i"
 				break
 			fi
 		done
 
-		# md5
 		if ! echo "$(cut -f1 -d' ' sum.txt)" $actual_truth | md5sum --check
 		then
 			if ! ~{exact}
 			then
-				# R
 				echo "Calling Rscript to check for functional equivalence."
-				if Rscript /opt/rough_equivalence_check.R testcopy_$test_basename truthcopy_$truth_basename ~{tolerance}
+				if Rscript /opt/rough_equivalence_check.R $j $actual_truth ~{tolerance}
 				then
 					echo "Outputs are not identical, but are mostly equivalent."
 				else
