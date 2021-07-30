@@ -11,6 +11,9 @@ For performing a check between an array of truth files and an array of test file
 ### arraycheck_rdata
 Similar to arraycheck_exact, but upon md5 mismatch, an Rscript is run to check for functional equivalence via `all.equal(testfile, truthfile, tolerance)`. It is assumed that both checked files are RData files. The user may set the tolerance value, which defaults to 1.0e-8.
 
+### big_cheese
+Detailed example of how to use to estimate the disk size requirement of a task and/or allow the user to pick a disk size.
+
 ### enumouse
 Type `enum` exists in CWL, but not WDL. This task very roughly mimics the `enum` type by checking if a string is within an allowed set of values.
 
