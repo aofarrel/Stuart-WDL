@@ -27,7 +27,7 @@ task stuart_arraycheck_rdata {
 			truth_basename="$(basename -- ${i})"
 
 			# We assume the test file and truth file have the same basename
-			# Due to how WDL input work, they have a different absolute path
+			# Due to how WDL inputs work, they have a different absolute path
 			if [ "${test_basename}" == "${truth_basename}" ]; then
 				actual_truth="$i"
 				break
