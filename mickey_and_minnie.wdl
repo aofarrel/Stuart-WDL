@@ -1,7 +1,5 @@
 version 1.0
 
-# Mickey and Minnie
-#
 # This workflow is an example of the pair() input type. It is based upon
 # an LD pruning workflow, but should not be used for actual scientific
 # analysis -- use this instead:
@@ -98,7 +96,7 @@ task echo_pairs {
 
 
 
-workflow mickey_and_minnie {
+workflow dot_product_scatter {
 	input {
 		Array[File] gds_files
 	}
