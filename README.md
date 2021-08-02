@@ -22,6 +22,9 @@ Checks if two files are equivalent, as opposed to arraycheck_* iterating through
 
 ## workflow-level
 
+### dot_product_scatter
+Example of how to use the pair variable type along with zip() to do a dot product scatter. This can be used to take a previous scattered task's inputs and outputs, and scatter again in a way that links the inputs with the outputs they generated.
+
 ### metamouse
 Checker/Debugger for Stuart tasks. The test files are derived from the [WDL translation](https://github.com/DataBiosphere/analysis_pipeline_WDL) of the [UWGAC TOPMed Pipeline](https://github.com/UW-GAC/analysis_pipeline).
 
