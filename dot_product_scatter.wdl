@@ -77,11 +77,11 @@ task echo_pairs {
 	
 	command {
 		
-		echo "GDS file: ~{gds_n_varinc.left}\n\n"
-		echo "Resulting variant file it output: ~{gds_n_varinc.right}\n\n"
-		echo "We can now call another R script to subset each GDS file via the variants file..."
-		echo "...but we won't, because I want to encourage you to use this workflow instead:"
-		echo "https://dockstore.org/workflows/github.com/DataBiosphere/analysis_pipeline_WDL/ld-pruning-wdl"
+		printf "GDS file: ~{gds_n_varinc.left}\n\n"
+		printf "Resulting variant file it output: ~{gds_n_varinc.right}\n\n"
+		printf "We can now call another R script to subset each GDS file via the variants file..."
+		printf "...but we won't, because I want to encourage you to use this workflow instead: "
+		printf "https://dockstore.org/workflows/github.com/DataBiosphere/analysis_pipeline_WDL/ld-pruning-wdl"
 
 	}
 
