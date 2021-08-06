@@ -1,5 +1,8 @@
 version 1.0
 
+# Author: Ash O'Farrell (UCSC)
+# Note that this assumes that file names between the test and truth match
+
 task stuart_arraycheck_simple {
 	input {
 		Array[File] test
@@ -9,7 +12,7 @@ task stuart_arraycheck_simple {
 
 	Int test_size = ceil(size(test, "GB"))
 	Int truth_size = ceil(size(truth, "GB"))
-	Int finalDiskSize = test_size + truth_size + 1
+	Int finalDiskSize = test_size + truth_size + 3
 
 	command <<<
 	for j in ~{sep=' ' test}
@@ -40,7 +43,7 @@ task stuart_arraycheck_simple {
 	runtime {
 		cpu: 2
 		disks: "local-disk " + finalDiskSize + " HDD"
-		docker: "quay.io/aofarrel/rchecker:1.1.0"
+		docker: "debian:stretch-slim"
 		memory: "2 GB"
 		preemptible: 2
 	}
