@@ -3,3 +3,4 @@ cromwell-input/*
 Cromwell.stdout.txt
 Cromwell.stderr.txt
 .DS_Store
+*/cromwell-executions/*

@@ -24,6 +24,30 @@ task as_above_but_with_carrots {
   >>>
 }
 
+# As of Cromwell 76, this will throw a bad substitution error
+task marcs_version {
+	input {
+    Array[File] infiles
+  }
+	command <<<
+    set -e
+    cat ${write_lines(infiles)} > subtree_urls.txt
+    >>>
+}
+
+# As of Cromwell 76, this will not error out, but it doesn't seem
+# to actually make a JSON file. It's another temp file with no key-value
+# pairs, just a JSON-compatiable array. Strictly speaking that would be
+# valid JSON if it had the right extension...?
+task make_a_json {
+  input {
+    Array[File] bams
+  }
+  command {
+    echo ${write_json(bams)} > foo.txt
+  }
+}
+
 workflow parserissues {
 	input {
 		Array[File] bam_files
@@ -34,7 +58,17 @@ workflow parserissues {
 			bams = bam_files
 	}
 
-	call as_above_but_with_carrots {
+	#call as_above_but_with_carrots {
+	#	input:
+	#		bams = bam_files
+	#}
+
+	#call marcs_version {
+	#	input:
+	#		infiles = bam_files
+	#}
+
+	call make_a_json {
 		input:
 			bams = bam_files
 	}
