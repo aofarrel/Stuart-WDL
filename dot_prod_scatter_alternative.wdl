@@ -2,21 +2,12 @@ version 1.0
 
 task configure_cross_product {
 	input {
-		Array[Array[File]] files
+		Array[Array[String]] files
 		File segments_file
 	}
 
 	command <<<
 		cat ~{write_json(files)}
-
-		ARRAYS=(~{sep=" " files})
-		for ARRAY in ${ARRAYS[@]};
-		do
-			for FILE in ${ARRAY[@]};
-			do
-				ln -s ${FILE} .
-			done
-		done
 
 		python2<<CODE
 		import json
@@ -64,19 +55,19 @@ task configure_cross_product {
 				# Key is chr number, value is associated GDS file
 				this_chr = find_chromosome(file_array[i])
 				if this_chr == "X":
-					gdss[23] = os.path.basename(file_array[i])
+					gdss[23] = file_array[i]
 				elif this_chr == "Y":
-					gdss[24] = os.path.basename(file_array[i])
+					gdss[24] = file_array[i]
 				elif this_chr == "M":
-					gdss[25] = os.path.basename(file_array[i])
+					gdss[25] = file_array[i]
 				else:
-					gdss[int(this_chr)] = os.path.basename(file_array[i])
+					gdss[int(this_chr)] = file_array[i]
 			return gdss
 
 		def pair_chromosome_gds_special(file_array, agg_file):
 			gdss = dict()
 			for i in range(0, len(file_array)):
-				gdss[int(find_chromosome(file_array[i]))] = os.path.basename(agg_file)
+				gdss[int(find_chromosome(file_array[i]))] = agg_file
 			return gdss
 
 		def wdl_get_segments():
@@ -106,7 +97,6 @@ task configure_cross_product {
 		######################
 		# prepare seg output #
 		######################
-		beginning = datetime.datetime.now()
 		input_gdss = pair_chromosome_gds(IIinput_gds_filesII)
 		output_segments = []
 		actual_segments = wdl_get_segments()
@@ -131,7 +121,6 @@ task configure_cross_product {
 		segs_output_hack = open("segs_output_debug.txt", "w")
 		segs_output_hack.writelines(["%s " % thing for thing in output_segments])
 		segs_output_hack.close()
-		print("Info: Segment output prepared in %s minutes" % divmod((datetime.datetime.now()-beginning).total_seconds(), 60)[0])
 
 		######################
 		# prepare agg output #
@@ -140,7 +129,6 @@ task configure_cross_product {
 		# input. We don't need to account for that because the way WDL works means it they are a
 		# required output of a previous task and a required input of this task. That said, if this
 		# code is reused for other WDLs, it may need some adjustments right around here.
-		beginning = datetime.datetime.now()
 		input_gdss = pair_chromosome_gds(IIinput_gds_filesII)
 		agg_segments = wdl_get_segments()
 		if 'chr' in os.path.basename(IIaggregate_filesII[0]):
@@ -157,7 +145,6 @@ task configure_cross_product {
 				output_aggregate_files.append(input_aggregate_files[chr])
 			elif (chr in input_gdss):
 				output_aggregate_files.append(None)
-		print("Info: Aggregate output prepared in %s minutes" % divmod((datetime.datetime.now()-beginning).total_seconds(), 60)[0])
 
 		#########################
 		# prepare varinc output #
@@ -223,7 +210,7 @@ task configure_cross_product {
 	>>>
 
 	output {
-		Array[Array[File]] crossed = read_json("output_files.json")
+		Array[Array[String]] crossed = read_json("output_files.json")
 	}
 }
 
