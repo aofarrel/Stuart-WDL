@@ -9,6 +9,15 @@ task configure_cross_product {
 	command <<<
 		cat ~{write_json(files)}
 
+		ARRAYS=(~{sep=" " files})
+		for ARRAY in ${ARRAYS[@]};
+		do
+			for FILE in ${ARRAY[@]};
+			do
+				ln -s ${FILE} .
+			done
+		done
+
 		python2<<CODE
 		import json
 		files = json.load(open("~{write_json(files)}"))
