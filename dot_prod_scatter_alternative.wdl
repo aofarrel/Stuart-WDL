@@ -20,7 +20,6 @@ task configure_cross_product {
 		IIvariant_include_filesII = files[2]
 		IIaggregate_filesII = files[1]
 
-		from zipfile import ZipFile
 		import os
 		import shutil
 		import datetime
@@ -99,6 +98,7 @@ task configure_cross_product {
 		######################
 		input_gdss = pair_chromosome_gds(IIinput_gds_filesII)
 		output_segments = []
+		output_segments_as_files = []
 		actual_segments = wdl_get_segments()
 		for i in range(0, len(actual_segments)): # for(var i=0;i<segments.length;i++){
 			try:
@@ -108,18 +108,22 @@ task configure_cross_product {
 			if(chr in input_gdss):
 				seg_num = i+1
 				output_segments.append(seg_num)
+				output_segments_as_files.append("%s/%s.integer" % (os.getcwd(), seg_num))
 				output_seg_as_file = open("%s.integer" % seg_num, "w")
+				output_seg_as_file.close()
 
 		# I don't know for sure if this case is actually problematic, but I suspect it will be.
 		if max(output_segments) != len(output_segments):
 			print("ERROR: output_segments needs to be a list of consecutive integers.")
+			print("ERROR: Usually this error is caused by running on non-consecutive autosomes.")
 			print("Debug: Max of list: %s. Len of list: %s." % 
 				[max(output_segments), len(output_segments)])
-			print("Debug: List is as follows:\n\t%s" % output_segments)
+			print("Debug: List is as follows:\n\t%s\n\n" % output_segments)
+			print("Now exiting due to error...")
 			exit(1)
 
 		segs_output_hack = open("segs_output_debug.txt", "w")
-		segs_output_hack.writelines(["%s " % thing for thing in output_segments])
+		segs_output_hack.writelines(["%s " % thing for thing in output_segments_as_files])
 		segs_output_hack.close()
 
 		######################
@@ -180,12 +184,13 @@ task configure_cross_product {
 		var_output_hack.close()
 
 		# make a bunch of arrays
+		print("###############################")
 		print("Preparing dot-product arrays...")
+		print("###############################")
 		everything = []
 		for i in range(0, max(output_segments)):
 			plusone = i+1
-			# leaving out output_segments[i] for now
-			this_dot_prod = [output_gdss[i], output_aggregate_files[i]]
+			this_dot_prod = [output_gdss[i], output_aggregate_files[i], output_segments_as_files[i]]
 			if IIvariant_include_filesII != [""]:
 				print("Info: We detected %s as an output variant file." % output_variant_files[i])
 				this_dot_prod.append(output_variant_files[i])
