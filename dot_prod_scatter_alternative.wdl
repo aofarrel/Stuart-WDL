@@ -4,9 +4,11 @@ task configure_cross_product {
 	input {
 		Array[Array[String]] files
 		File segments_file
+		Boolean debug = true
 	}
 
 	command <<<
+		echo "Info: Writing files to json..."
 		cat ~{write_json(files)}
 
 		python2<<CODE
@@ -33,7 +35,7 @@ task configure_cross_product {
 				if chrom_num in acceptable_chrs:
 					return chrom_num
 				else:
-					print("%s appears to be an invalid chromosome number." % chrom_num)
+					print("ERROR: %s appears to be an invalid chromosome number." % chrom_num)
 					exit(1)
 			elif (unicode(str(chrom_num[1])).isnumeric()):
 				# two digit number
@@ -89,9 +91,12 @@ task configure_cross_product {
 				chr = gds_segments[i].split('\t')[0]
 			if(chr in input_gdss):
 				output_gdss.append(input_gdss[chr])
-		gds_output_hack = open("gds_output_debug.txt", "w")
-		gds_output_hack.writelines(["%s " % thing for thing in output_gdss])
-		gds_output_hack.close()
+		if "~{debug}" == "true":
+			# This was originally a necessary workaround for an older version of the pipeline,
+			# but now functions as a debugging tool.
+			gds_output_hack = open("gds_output_debug.txt", "w")
+			gds_output_hack.writelines(["%s " % thing for thing in output_gdss])
+			gds_output_hack.close()
 
 		######################
 		# prepare seg output #
@@ -116,15 +121,18 @@ task configure_cross_product {
 		if max(output_segments) != len(output_segments):
 			print("ERROR: output_segments needs to be a list of consecutive integers.")
 			print("ERROR: Usually this error is caused by running on non-consecutive autosomes.")
-			print("Debug: Max of list: %s. Len of list: %s." % 
+			print("Debugging info: Max of list: %s. Len of list: %s." % 
 				[max(output_segments), len(output_segments)])
-			print("Debug: List is as follows:\n\t%s\n\n" % output_segments)
+			print("Debugging info: List is as follows:\n\t%s\n\n" % output_segments)
 			print("Now exiting due to error...")
 			exit(1)
 
-		segs_output_hack = open("segs_output_debug.txt", "w")
-		segs_output_hack.writelines(["%s " % thing for thing in output_segments_as_files])
-		segs_output_hack.close()
+		if "~{debug}" == "true":
+			# This was originally a necessary workaround for an older version of the pipeline,
+			# but now functions as a debugging tool.
+			segs_output_hack = open("segs_output_debug.txt", "w")
+			segs_output_hack.writelines(["%s " % thing for thing in output_segments_as_files])
+			segs_output_hack.close()
 
 		######################
 		# prepare agg output #
@@ -179,9 +187,13 @@ task configure_cross_product {
 				if(chr in input_gdss):
 					null_outputs.append(None)
 			output_variant_files = null_outputs
-		var_output_hack = open("variant_output_debug.txt", "w")
-		var_output_hack.writelines(["%s " % thing for thing in output_variant_files])
-		var_output_hack.close()
+		
+		if "~{debug}" == "true":
+			# This was originally a necessary workaround for an older version of the pipeline,
+			# but now functions as a debugging tool.
+			var_output_hack = open("variant_output_debug.txt", "w")
+			var_output_hack.writelines(["%s " % thing for thing in output_variant_files])
+			var_output_hack.close()
 
 		# make a bunch of arrays
 		print("###############################")
@@ -189,14 +201,25 @@ task configure_cross_product {
 		print("###############################")
 		everything = []
 		for i in range(0, max(output_segments)):
+			beginning = datetime.datetime.now()
 			plusone = i+1
 			this_dot_prod = [output_gdss[i], output_aggregate_files[i], output_segments_as_files[i]]
 			if IIvariant_include_filesII != [""]:
-				print("Info: We detected %s as an output variant file." % output_variant_files[i])
+				# Both the CWL and the WDL basically have duplicated output wherein each
+				# segment for a given chromosome get the same var include output. If you
+				# have six segments that cover chr2, then each segment will get the same
+				# var include file for chr2.
+				if "~{debug}" == "true":
+					print("Debug: Detected %s as an output variant file" % output_variant_files[i])
 				this_dot_prod.append(output_variant_files[i])
-			print("Info: Made segment %s array" % plusone)
 			everything.append(this_dot_prod)
-		print("Debug: Array of arrays is as follows: %s" % everything)
+			if "~{debug}" == "true":
+				print("Debug: Made segment %s array" % plusone)
+		
+		if "~{debug}" == "true":
+			print("Debug: Array of arrays is as follows: %s" % everything)
+
+		# prepare JSON
 		arraylist = []
 		arraylist.append('[')
 		for array in everything:
@@ -221,15 +244,17 @@ task configure_cross_product {
 
 task take_in_dot_prods {
 	input {
-		File a
-		File b
-		File c
+		File gds
+		File agg
+		File seg
+		File var
 	}
 
 	command {
-		echo "~{a}"
-		echo "~{b}"
-		echo "~{c}"
+		printf "gds: ~{gds}\n\n"
+		printf "agg: ~{agg}\n\n"
+		printf "seg: ~{seg}\n\n"
+		printf "var: ~{var}\n\n"
 	}
 }
 
@@ -246,9 +271,10 @@ workflow dot_product_scatter_alternative {
 	scatter(product in configure_cross_product.crossed){
 		call take_in_dot_prods {
 			input:
-				a = product[0],
-				b = product[1],
-				c = product[2]
+				gds = product[0],
+				agg = product[1],
+				seg = product[2],
+				var = product[3]
 		}
 	}
 }
