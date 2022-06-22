@@ -11,7 +11,7 @@ task configure_cross_product {
 		echo "Info: Writing files to json..."
 		cat ~{write_json(files)}
 
-		python2<<CODE
+		python<<CODE
 		import json
 		files = json.load(open("~{write_json(files)}"))
 		for file in files:
@@ -237,6 +237,11 @@ task configure_cross_product {
 		CODE
 	>>>
 
+	runtime {
+		docker: "uwgac/topmed-master@sha256:f2445668725434ea6e4114af03f2857d411ab543f42a553f5856f2958e6e9428" # uwgac/topmed-master:2.12.1
+		preemptibles: 3
+	}
+
 	output {
 		Array[Array[String]] crossed = read_json("output_files.json")
 	}
@@ -255,6 +260,11 @@ task take_in_dot_prods {
 		printf "agg: ~{agg}\n\n"
 		printf "seg: ~{seg}\n\n"
 		printf "var: ~{var}\n\n"
+	}
+
+	runtime {
+		docker: "ubuntu:jammy-20220101"
+		preemptibles: 3
 	}
 }
 
