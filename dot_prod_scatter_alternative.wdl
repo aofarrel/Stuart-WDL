@@ -113,8 +113,8 @@ task configure_cross_product {
 			if(chr in input_gdss):
 				seg_num = i+1
 				output_segments.append(seg_num)
-				output_segments_as_files.append("%s/%s.integer" % (os.getcwd(), seg_num))
-				output_seg_as_file = open("%s.integer" % seg_num, "w")
+				output_segments_as_files.append("%s" % seg_num)
+				output_seg_as_file = open("%s" % seg_num, "w")
 				output_seg_as_file.close()
 
 		# I don't know for sure if this case is actually problematic, but I suspect it will be.
@@ -251,7 +251,7 @@ task take_in_dot_prods {
 	input {
 		File gds
 		File agg
-		File seg
+		Int seg
 		File var
 	}
 
