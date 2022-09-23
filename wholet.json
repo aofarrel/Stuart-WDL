@@ -1,4 +1,3 @@
 {
-    "pompey_permit": "data/permit.md",
-    "gremlin_permit": "data/permit.md"
+    "files": ["data/permit.md", "data/permit.md"]
 }

@@ -23,12 +23,11 @@ task out {
 
 workflow wholet {
 	input {
-		File pompey_permit
-		File gremlin_permit
+		Array[File] files
 	}
 
-	Dog pompey = {"breed": "King Charles Cavalier Spaniel", "age_years": 4.5, "permit": pompey_permit}
-	Dog gremlin = {"breed": "kind of weird terrier", "age_years": 0.3, "permit": gremlin_permit}
+	Dog pompey = {"breed": "King Charles Cavalier Spaniel", "age_years": 4.5, "permit": files[0]}
+	Dog gremlin = {"breed": "kind of weird terrier", "age_years": 0.3, "permit": files[1]}
 
 	Array[Dog] thedogs = [pompey, gremlin]
 
