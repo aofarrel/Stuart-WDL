@@ -3,7 +3,7 @@ version 1.0
 struct Dog {
 	String breed
 	Float age_years
-	Array[File] permit
+	File permit
 }
 
 task out {
@@ -12,7 +12,7 @@ task out {
 	}
     command <<<
         echo "I can see a ~{who.breed} that is ~{who.age_years} years old"
-        cat ~{sep='' who.permit}
+        cat ~{who.permit}
     >>>
 
     runtime {
@@ -23,7 +23,7 @@ task out {
 
 workflow wholet {
 	input {
-		Array[Array[File]] files
+		Array[File] files
 	}
 
 	Dog pompey = {"breed": "King Charles Cavalier Spaniel", "age_years": 4.5, "permit": files[0]}
