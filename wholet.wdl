@@ -19,6 +19,10 @@ task out {
 		docker: "ubuntu:latest"
 		preemptible: 1
 	}
+
+	output {
+		Dog out = who
+	}
 }
 
 workflow wholet {
