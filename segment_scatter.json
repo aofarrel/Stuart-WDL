@@ -1,0 +1,4 @@
+{
+   "Segment_Scatter.input_files": ["segment_scatter.wdl", "segfault.wdl", "big_cheese.wdl", "enumouse.wdl", "metamouse.wdl", "metamouse.json", "metamouse-local.wdl"],
+   "Segment_Scatter.n_segments": 3 
+}
