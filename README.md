@@ -23,6 +23,9 @@ Type `enum` exists in CWL, but not WDL. This task very roughly mimics the `enum`
 *Depreciated: Use https://github.com/dockstore/checker-WDL-templates instead*  
 Checks if two files are equivalent, as opposed to arraycheck_* iterating through two arrays. Includes the same Rdata equivalence checker of arraycheck_rdata (disabled by default).
 
+### segfault
+Divide an array of inputs into "segments" for scattering. For example, 10 input files can make 2 segments of 5, and you can scatter 2x on those segments.
+
 ## workflow-level
 
 ### dot_product_scatter
@@ -30,6 +33,9 @@ Example of how to use the pair variable type along with zip() to do a dot produc
 
 ### metamouse
 Checker/Debugger for Stuart tasks. The test files are derived from the [WDL translation](https://github.com/DataBiosphere/analysis_pipeline_WDL) of the [UWGAC TOPMed Pipeline](https://github.com/UW-GAC/analysis_pipeline).
+
+### segment_scatter
+Workflow implementation/example of segfault.
 
 ### whiskertail
 Template for enforcing order in a WDL workspace. This could be useful if you want a workflow to fail early, rather than waste time/money on other steps.
