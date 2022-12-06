@@ -1,6 +1,6 @@
 version 1.0
 
-import "./segfault.wdl"
+import "https://raw.githubusercontent.com/aofarrel/Stuart-WDL/segment_scatter/segment_scatter.wdl"
 
 workflow Segment_Scatter {
 	input {
