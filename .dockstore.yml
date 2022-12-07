@@ -1,0 +1,7 @@
+version: 1.2
+workflows:
+  - name: segment_scatter
+    subclass: WDL
+    primaryDescriptorPath: /segment_scatter.wdl
+    authors:
+      - orcid: 0000-0003-4896-1858
