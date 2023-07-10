@@ -5,11 +5,11 @@ workflow Nifty_Workaround {
         File always_exists
         File? some_input
         File? some_metadata
-        Boolean summarize_input_if_it_exists = true
+        Boolean matutils_something = true
     }
 
-    # if we want to summarize the input...
-	if((summarize_input_if_it_exists)) {
+    # if we want to use matutils...
+	if((matutils_something)) {
 	    
 	    # and the input exists...
 		if (defined(some_input)) {
@@ -26,15 +26,21 @@ workflow Nifty_Workaround {
 				}
 			}
 
-            # this block executes if we want to summarize the input, and the input exists, but the input
+            # This block executes if we want to summarize the input, and the input exists, but the input
             # may or may not have been annotated.
+            
 			File possibly_annotated_input = select_first([annotate_optional_input.annotated_output, some_input])
 
-			call summarize as summarize_input {
+			call word_count as word_count_input {
 				input:
-					thing_to_summarize = possibly_annotated_input
+					thing_to_word_count = possibly_annotated_input
 			}
 		}
+
+		# We want to use matutils, but the some_input may or may not exist. If some_input exists, we
+		# want to run matutils on it. if some_input exists and also has been annotated, we want to
+		# use the annotated version. if some_input does not exist, we want to fall back to a file that
+		# already exists in the Docker image used by the task.
 	}
 
 
@@ -67,19 +73,50 @@ task annotate {
 	}
 }
 
-task summarize {
+task count_lines {
     input { 
-        File? thing_to_summarize # yes, type File?, because we want to fallback to something in the Docker image if not defined
+        File thing_with_lines_to_count
         Int addl_disk_space = 10
     }
-    Int disk_size = if defined(thing_to_summarize) then ceil(size(thing_to_summarize, "GB")) + addl_disk_space else addl_disk_space
+	Int disk_size = ceil(size(thing_with_lines_to_count, "GB")) + addl_disk_space
     
     command <<<
-    wc -l ~{thing_to_summarize} >> line_count.txt
+    wc -l ~{thing_with_lines_to_count} >> line_count.txt
     >>>
     
     output {
-        File summarized_output = "line_count.txt"
+        File line_count = "line_count.txt"
+    }
+    
+    runtime {
+		cpu: 4
+		disks: "local-disk " + disk_size + " SSD"
+		docker: "ashedpotatoes/usher-plus:0.0.2"
+		memory: "4 GB"
+		preemptible: 1
+	}
+}
+
+task do_something_to_input_or_some_file_already_in_docker_image {
+    input { 
+        File? something_that_might_exist
+        Int addl_disk_space = 10
+    }
+    Int disk_size = if defined(something_that_might_exist) then ceil(size(something_that_might_exist, "GB")) + addl_disk_space else addl_disk_space
+    
+    command <<<
+    if [[ "~{something_that_might_exist}" = "" ]]
+	then
+		i="/HOME/usher/example_tree/tb_alldiffs_mask2ref.L.fixed.pb"
+	else
+		i="~{something_that_might_exist}"
+	fi
+
+	matUtils summary -i "$i" > "matutils_summary.txt"
+    >>>
+    
+    output {
+        File matutils_output = "matutils_summary.txt"
     }
     
     runtime {
